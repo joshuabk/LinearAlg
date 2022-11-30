@@ -60,6 +60,6 @@ print( MatrixMult(mat1, mat2))
 
 print( np.matmul(mat1, mat2))
 
-matrixAdd
+def matrixAdd()
 
 
