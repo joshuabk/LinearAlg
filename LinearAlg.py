@@ -48,9 +48,9 @@ def makeMatrix(dim1, dim2):
     return matrix
 
 
-mat1 = makeMatrix(3, 3)
+mat1 = makeMatrix(5, 5)
 
-mat2 = makeMatrix(3, 3)
+mat2 = makeMatrix(5, 5)
 
 print( MatrixMult(mat1, mat2))
 
@@ -107,77 +107,9 @@ def getCofactorSubmatrix(mat, row, col):
    
     return subMat
 
-def getCofactor(mat):
-    mat = np.array(mat)
-    cofMat = np.zeros((mat.shape[1],mat.shape[0]))
-    for row  in range(mat.shape[0]):
-            for col in range(mat.shape[1]):
-                submat = getCofactorSubmatrix(mat, row, col)
-                sumPos = addSumPass(submat)
-                sumNeg = addSubPass(submat)
-                total  = sumPos + sumNeg
-                cofMat[row][col] = total
-     
+
     return cofMat
 
-def addSumPass(mat):
-    mat = np.array(mat)
-    sum = 0
-    for x in range(mat.shape[0]):
-        prod = 1
-        j = x
-        for i in range(mat.shape[0]):
-            if j < mat.shape[0]:
-                '''print('new')
-                print(i)
-                print(j)'''
-                prod = prod  * mat[i][j] 
-                j += 1
-            else:
-                j = 0
-                '''print('new')
-                print(i)
-                print(j)'''
-                
-                prod = prod  * mat[i][j] 
-                j +=1 
-    
-        sum += prod
-    print("sum")        
-    print(sum)
-        
-    return sum
-    
-def addSubPass(mat):
-    mat = np.array(mat)
-    sum = 0
-
-    for x in range(mat.shape[0]-1, 0 ,-1):
-        prod = 1
-        j = x
-        for i in range(mat.shape[0]):
-            if j >= 0:
-                prod = prod  * mat[i][j] 
-                
-         
-                print('new')
-                print(i+1)
-                print(j+1)
-                j -= 1
-            else:
-                j = mat.shape[0] -1 
-                prod = prod  * mat[i][j] 
-                
-                print('new')
-                print(i+1)
-                print(j+1)
-                j -=1 
-        sum = sum - prod
-    print("sub")
-    print(sum)
-    return sum
-
-cofMat = getCofactor(mat1)
 
             
 
@@ -221,12 +153,35 @@ class subMatrix:
                 subMatList.append(newSub)
             
             return subMatList
+
+def getCofactor(mat):
+    mat = np.array(mat)
+    cofMat = np.zeros((mat.shape[1],mat.shape[0]))
+    for row  in range(mat.shape[0]):
+            for col in range(mat.shape[1]):
+                submat = getCofactorSubmatrix(mat, row, col)
+                
+                subMat = subMatrix(1, np.array(submat))
+                total  = getDeterminate(subMat)
+                cofMat[row][col] = total
+    return cofMat
+     
  
 
 testSub = subMatrix(1, mat1)
 newList = testSub.determinate()
 
+def getDeterminate(subMat):
+    matList = subMat.determinate()
+    print(subMat.mat)
+    twoList = getListOfTwos(matList)
+    deter = calcDeterminantFromTwos(twoList)
+    return deter
+    
+
+
 def getListOfTwos(matList):
+    print(matList)
     while(matList[0].mat.shape[0]>2):
         newList = []
         for mat in matList:
@@ -235,6 +190,7 @@ def getListOfTwos(matList):
 
         matList = newList
     return matList
+
 twoList = getListOfTwos(newList)
 
 
@@ -258,17 +214,20 @@ print(determin)
 
 
 
-
+cofMat = getCofactor(mat1)
 matAdj = np.matrix(mat1)
 
 
 print(matAdj.getH())
 
 
-print(cofMat)
-print(np.linalg.inv(mat1) * determin)
+adjMat = getAdjoint(cofMat)
+
+print(adjMat/determin)
+
+print(np.linalg.inv(mat1))
 
 
 
-adjM = getAdjoint(cofMat)
+#adjM = getAdjoint(cofMat)
 
