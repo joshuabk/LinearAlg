@@ -163,7 +163,7 @@ def getCofactor(mat):
                 
                 subMat = subMatrix(1, np.array(submat))
                 total  = getDeterminate(subMat)
-                #total = total * (-1)**i
+                #total = total * (-1)**(i+1)
                 cofMat[row][col] = total
     return cofMat
      
@@ -223,12 +223,19 @@ print(matAdj.getH())
 
 
 adjMat = getAdjoint(cofMat)
+npCofactor = np.linalg.inv(mat1).T * np.linalg.det(mat1)
+print(mat1)
+print(npCofactor)
+print(cofMat)
+#print(adjMat)
 
-print(adjMat/determin)
+#print(adjMat/determin)
 
-print(np.linalg.inv(mat1))
+#print(np.linalg.inv(mat1))
 
 
 
 #adjM = getAdjoint(cofMat)
+print(getDeterminate(mat1))
 
+print(np.linalg.det(mat1))
