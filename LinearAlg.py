@@ -163,6 +163,7 @@ def getCofactor(mat):
                 
                 subMat = subMatrix(1, np.array(submat))
                 total  = getDeterminate(subMat)
+                #total = total * (-1)**i
                 cofMat[row][col] = total
     return cofMat
      
