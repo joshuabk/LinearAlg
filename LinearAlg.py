@@ -149,7 +149,7 @@ class subMatrix:
 
                     NewMat.append(row)
 
-                newSub = subMatrix(sign* self.coef*Ncoef, np.array(NewMat))
+                newSub = subMatrix(sign *self.coef*Ncoef, np.array(NewMat))
                 subMatList.append(newSub)
             
             return subMatList
@@ -157,13 +157,16 @@ class subMatrix:
 def getCofactor(mat):
     mat = np.array(mat)
     cofMat = np.zeros((mat.shape[1],mat.shape[0]))
+    i = 0
     for row  in range(mat.shape[0]):
             for col in range(mat.shape[1]):
                 submat = getCofactorSubmatrix(mat, row, col)
                 
                 subMat = subMatrix(1, np.array(submat))
                 total  = getDeterminate(subMat)
-                #total = total * (-1)**(i+1)
+                
+                total = total * (-1)**(i)
+                i+=1
                 cofMat[row][col] = total
     return cofMat
      
@@ -229,13 +232,13 @@ print(npCofactor)
 print(cofMat)
 #print(adjMat)
 
-#print(adjMat/determin)
+print(adjMat/determin)
 
-#print(np.linalg.inv(mat1))
+print(np.linalg.inv(mat1))
 
 
 
 #adjM = getAdjoint(cofMat)
-print(getDeterminate(mat1))
+#print(getDeterminate(testSub))
 
-print(np.linalg.det(mat1))
+#print(np.linalg.det(mat1))
