@@ -48,14 +48,14 @@ def makeMatrix(dim1, dim2):
     return matrix
 
 
-mat1 = makeMatrix(5, 5)
+mat1 = makeMatrix(2, 2)
 
-mat2 = makeMatrix(5, 5)
+mat2 = makeMatrix(4, 4)
 
-print( MatrixMult(mat1, mat2))
+#print( MatrixMult(mat1, mat2))
 
 
-print( np.matmul(mat1, mat2))
+#print( np.matmul(mat1, mat2))
 
 #sums matrices
 def matrixAdd(mat1, mat2):
@@ -82,11 +82,11 @@ def matrixSub(mat1, mat2):
         return sumMat
 
 
-sumM = matrixAdd(mat1, mat2)
+#sumM = matrixAdd(mat1, mat2)
 
 def getAdjoint(mat):
     mat = np.array(mat)
-    adjMat = np.zeros((mat.shape[1],mat.shape[0]))
+    adjMat = np.zeros((mat.shape[1], mat.shape[0]))
     for i in range(mat.shape[0]):
             for j in range(mat.shape[1]):
                 adjMat[j][i] = mat[i][j]
@@ -108,18 +108,13 @@ def getCofactorSubmatrix(mat, row, col):
     return subMat
 
 
-    return cofMat
+    return cofMat        
 
-
-            
-
-print(sumM)
-print(np.add(mat1, mat2))
+#print(sumM)
+#print(np.add(mat1, mat2))
 
 
 invM = getAdjoint(mat1)
-
-
 
 
 
@@ -127,7 +122,6 @@ class subMatrix:
     def __init__(self, coef, mat):
         self.coef = coef
         self.mat = mat
-
 
     def determinate(self):
         subMatList = []
@@ -153,21 +147,29 @@ class subMatrix:
                 subMatList.append(newSub)
             
             return subMatList
+        else:
+            subList = []
+            subList.append(self)
+            return subList
 
 def getCofactor(mat):
     mat = np.array(mat)
     cofMat = np.zeros((mat.shape[1],mat.shape[0]))
-    i = 0
-    for row  in range(mat.shape[0]):
-            for col in range(mat.shape[1]):
-                submat = getCofactorSubmatrix(mat, row, col)
+    if mat.shape[0] > 2:
+        for row  in range(mat.shape[0]):
                 
-                subMat = subMatrix(1, np.array(submat))
-                total  = getDeterminate(subMat)
-                
-                total = total * (-1)**(i)
-                i+=1
-                cofMat[row][col] = total
+                for col in range(mat.shape[1]):
+                    
+                    
+                        submat = getCofactorSubmatrix(mat, row, col)
+                    
+                        subMat = subMatrix(1, np.array(submat))
+                        total  = getDeterminate(subMat)
+                    
+                        total = total * (-1)**(row+col+2)
+                    
+                        cofMat[row][col] = total
+            
     return cofMat
      
  
@@ -177,7 +179,7 @@ newList = testSub.determinate()
 
 def getDeterminate(subMat):
     matList = subMat.determinate()
-    print(subMat.mat)
+    
     twoList = getListOfTwos(matList)
     deter = calcDeterminantFromTwos(twoList)
     return deter
@@ -185,15 +187,18 @@ def getDeterminate(subMat):
 
 
 def getListOfTwos(matList):
-    print(matList)
-    while(matList[0].mat.shape[0]>2):
-        newList = []
-        for mat in matList:
-            for item in mat.determinate():
-                newList.append(item)
-
-        matList = newList
-    return matList
+    
+    if matList[0].mat.shape[0] >2:
+        while(matList[0].mat.shape[0]>2):
+            newList = []
+            for mat in matList:
+                for item in mat.determinate():
+                    newList.append(item)
+            matDetList = newList
+        return matList
+    else:
+        print(matList[0].mat)
+        return matList
 
 twoList = getListOfTwos(newList)
 
@@ -211,11 +216,9 @@ def calcDeterminantFromTwos(matList):
 
     return total
 
-
 determin =  calcDeterminantFromTwos(twoList)
 
 print(determin)
-
 
 
 cofMat = getCofactor(mat1)
@@ -227,18 +230,18 @@ print(matAdj.getH())
 
 adjMat = getAdjoint(cofMat)
 npCofactor = np.linalg.inv(mat1).T * np.linalg.det(mat1)
-print(mat1)
+#print(mat1)
 print(npCofactor)
 print(cofMat)
 #print(adjMat)
 
-print(adjMat/determin)
+#print(adjMat/determin)
 
-print(np.linalg.inv(mat1))
+#print(np.linalg.inv(mat1))
 
 
 
 #adjM = getAdjoint(cofMat)
-#print(getDeterminate(testSub))
+print(getDeterminate(testSub))
 
-#print(np.linalg.det(mat1))
+print(np.linalg.det(mat1))
