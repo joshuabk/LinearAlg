@@ -28,7 +28,7 @@ def time_dec(func):
 
 def MatrixMult(mat1, mat2):
         prodMat = np.zeros((mat2.shape[0], mat1.shape[1]))
-        if mat1.shape[0] == mat2.shape[1]:
+        if mat1.shape[0] == mat2.shape[1] or mat1.shape[1] == mat2.shape[0]:
 
             for x in range(mat1.shape[1]):
                 
@@ -38,7 +38,7 @@ def MatrixMult(mat1, mat2):
                         
                         sum +=  mat1[j][x] * mat2[i][j]
                     #print(sum)
-                    prodMat[x][i] = int(sum)
+                    prodMat[i][x] = int(sum)
             #print(prodMat)
             return prodMat
 
@@ -76,7 +76,7 @@ mat2 = makeMatrix(2, 2)
 
 
 def matrixAdd(mat1, mat2):
-    sumMat = np.zeros((mat1.shape[1],mat2.shape[0]))
+    sumMat = np.zeros((mat1.shape[0], mat2.shape[1]))
     if mat1.shape[1] == mat2.shape[1] and  mat1.shape[0] == mat2.shape[0]:
         for i in range(mat1.shape[0]):
             for j in range(mat1.shape[1]):
@@ -88,7 +88,7 @@ def matrixAdd(mat1, mat2):
 
 #subtaracts matrix
 def matrixSub(mat1, mat2):
-    sumMat = np.zeros((mat1.shape[1],mat2.shape[0]))
+    sumMat = np.zeros((mat1.shape[0],mat2.shape[1]))
     if mat1.shape[1] == mat2.shape[1] and  mat1.shape[0] == mat2.shape[0]:
         for i in range(mat1.shape[0]):
             for j in range(mat1.shape[1]):
@@ -101,7 +101,7 @@ def matrixSub(mat1, mat2):
 
 #sumM = matrixAdd(mat1, mat2)
 @time_dec
-def getAdjoint(mat):
+def getTranspose(mat):
     mat = np.array(mat)
     adjMat = np.zeros((mat.shape[1], mat.shape[0]))
     for i in range(mat.shape[0]):
@@ -125,7 +125,7 @@ def getCofactorSubmatrix(mat, row, col):
 #print(np.add(mat1, mat2))
 
 
-invM = getAdjoint(mat1)
+invM =  getTranspose(mat1)
 # returns matrix with row removed
 def chopRow(row, mat):
     mata = mat[:row , :]
@@ -175,7 +175,6 @@ class subMatrix:
                     sign = 1
                 else:
                     sign = -1
-
                 NewMat = getMinor(0, x, mat)
                      
                 newSub = subMatrix(sign *self.coef*Ncoef, NewMat)
@@ -272,6 +271,14 @@ def calcDeterminantFromTwos(matList):
 
 determin =  calcDeterminantFromTwos(twoList)
 
+def getInverse(subMat):
+     cof = getCofactor(subMat)
+     deter = getDeterminate(subMat)
+     Tcof = getTranspose(cof)
+     inverse = Tcof/deter
+     return inverse
+
+
 #print(determin)
 
 
@@ -282,7 +289,7 @@ matAdj = np.matrix(mat1)
 #print(matAdj.getH())
 
 
-adjMat = getAdjoint(cofMat)
+adjMat = getTranspose(cofMat)
 npCofactor = np.linalg.inv(mat1).T * np.linalg.det(mat1)
 #print(mat1)
 '''print(npCofactor)
