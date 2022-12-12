@@ -3,6 +3,7 @@ import numpy as np
 import random as ran
 import time
 
+
 #class LinAlgebra:
 
     #def __init__():
@@ -26,19 +27,18 @@ def time_dec(func):
 
 
 def MatrixMult(mat1, mat2):
-        prodMat = np.zeros((mat1.shape[1],mat2.shape[0]))
-        if mat1.shape[0] == mat2.shape[1] and  mat1.shape[1] == mat2.shape[0]:
+        prodMat = np.zeros((mat2.shape[0], mat1.shape[1]))
+        if mat1.shape[0] == mat2.shape[1]:
 
             for x in range(mat1.shape[1]):
                 
-                for i in range(mat1.shape[0]):
+                for i in range(mat2.shape[0]):
                     sum = 0
-                    for j in range(mat1.shape[1]):
+                    for j in range(mat1.shape[0]):
                         
-                        sum +=  mat1[x][j] * mat2[j][i]
+                        sum +=  mat1[j][x] * mat2[i][j]
                     #print(sum)
                     prodMat[x][i] = int(sum)
-                
             #print(prodMat)
             return prodMat
 
