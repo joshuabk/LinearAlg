@@ -12,6 +12,14 @@ import time
 
 
 def time_dec(func):
+    ''' prints time it takes for a function to run
+    Args: 
+    function
+
+    Returns:
+    result: time it takes for a function to run
+    
+    '''
     def getTime(*args, **kwargs):
         start_time = time.time()  
         result  = func(*args,  **kwargs)
@@ -27,6 +35,15 @@ def time_dec(func):
 
 
 def MatrixMult(mat1, mat2):
+    '''multiplies to matrices
+    Args:
+    mat1:matrix to be multiplied
+    mat2:matrix to be multiplied
+
+    Return:
+    prodMat: result of matrix multiplication
+
+    '''
         prodMat = np.zeros((mat2.shape[0], mat1.shape[1]))
         if mat1.shape[0] == mat2.shape[1] or mat1.shape[1] == mat2.shape[0]:
 
@@ -57,15 +74,24 @@ testM = MatrixMult(mata, matb)
 #print(np.matmul(mata,matb))
 
 def makeMatrix(dim1, dim2):
+    ''' creates matrix of random integers
+    Args;
+    dim1: numbers of columns in the matrix
+    dim2: number of rows in the matrix
+
+    Returns:
+    matrix of random ints
+    
+    '''
     
     matrix = np.zeros((dim1, dim2))
     for i in range(dim1):
         for j in range(dim2):
-            matrix[i][j] = ran.randint(1,10)
+            matrix[i][j] = ran.randint(-10,10)
     return matrix
 
 
-mat1 = makeMatrix(9, 9)
+mat1 = makeMatrix(6, 6)
 
 mat2 = makeMatrix(2, 2)
 
@@ -76,6 +102,16 @@ mat2 = makeMatrix(2, 2)
 
 
 def matrixAdd(mat1, mat2):
+    '''perform matrix additon
+    
+    Args:
+    mat1: matrix to be added
+    mat2: matrix to be added
+
+    Return:
+    sumMat: reulting matrix of addition 
+    
+    '''
     sumMat = np.zeros((mat1.shape[0], mat2.shape[1]))
     if mat1.shape[1] == mat2.shape[1] and  mat1.shape[0] == mat2.shape[0]:
         for i in range(mat1.shape[0]):
@@ -88,35 +124,45 @@ def matrixAdd(mat1, mat2):
 
 #subtaracts matrix
 def matrixSub(mat1, mat2):
-    sumMat = np.zeros((mat1.shape[0],mat2.shape[1]))
+    '''subtracts two matrices
+
+    Args:
+    mat1: Matrix to be subtracted from
+    mat2: Matrix to subtract
+
+    Returns:
+    subMatrix: result of subtraction
+
+    '''
+    subMat = np.zeros((mat1.shape[0],mat2.shape[1]))
     if mat1.shape[1] == mat2.shape[1] and  mat1.shape[0] == mat2.shape[0]:
         for i in range(mat1.shape[0]):
             for j in range(mat1.shape[1]):
                 diff = mat1[i][j] -  mat2[i][j]
                 
-                sumMat[i][j]  = diff 
+                subMat[i][j]  = diff 
 
-        return sumMat
+        return subMat
 
 
 #sumM = matrixAdd(mat1, mat2)
 @time_dec
 def getTranspose(mat):
+    '''calculates transpose of a matrix
+
+    Args: 
+    mat: Matrix to be transposed
+
+    Return:
+    adjMat: Transposed Matrix
+    
+    '''
     mat = np.array(mat)
     adjMat = np.zeros((mat.shape[1], mat.shape[0]))
     for i in range(mat.shape[0]):
             for j in range(mat.shape[1]):
                 adjMat[j][i] = mat[i][j]
     return adjMat
-
-@time_dec
-def getCofactorSubmatrix(mat, row, col):
-    mat = np.array(mat)
-    subMat = []
-    rowlist = []
-    minor = getMinor(row, col, mat)
-   
-    return minor
 
 
           
@@ -128,6 +174,13 @@ def getCofactorSubmatrix(mat, row, col):
 invM =  getTranspose(mat1)
 # returns matrix with row removed
 def chopRow(row, mat):
+    '''removes a row from a matrix
+
+    Args:
+    row: row index to be removed
+    mat: matrix to remove row from
+      
+    '''
     mata = mat[:row , :]
     matb = mat[row+1: , :]
     minor  = np.concatenate((mata, matb), axis = 0)
@@ -135,6 +188,12 @@ def chopRow(row, mat):
 
 # returns matrix with column removed
 def chopCol(col, mat):
+    '''removes column from matrix
+
+    Args:
+    col: column index to be removed
+    mat: matrix to remove column from
+    '''
     mata = mat[: , :col]
     matb = mat[: ,col+1:]
 
@@ -152,6 +211,16 @@ print(minor)
 # returns minor matrix
 @time_dec
 def getMinor(row, col, mat):
+    '''get minor matrix from original matrix
+
+    Args:
+    row: row to be removed from matrix
+    col: column to be removed from matrix
+
+    Returns:
+    minor: minor matrix of the original matrix 
+    
+    '''
     tmat = chopRow(row, mat)
         
     minor = chopCol(col, tmat)
@@ -164,6 +233,15 @@ class subMatrix:
         self.mat = mat
 
     def getMinorList(self):
+        '''gives initial list of minors for every element of the matrix
+        Args: 
+        self
+
+        Returns: 
+        List of minor matrices, one for each element of the array
+        
+        
+        '''
         subMatList = []
         size = self.mat.shape[0]
         mat = self.mat
@@ -188,6 +266,14 @@ class subMatrix:
             return subList
 @time_dec
 def getCofactor(mat):
+    '''returns the cofactor for a matrix
+    Args:
+    Matrix to find cofactor for
+
+    Returns:
+   cofMat: Cofactor Matrix
+
+    '''
     mat = np.array(mat)
     cofMat = np.zeros((mat.shape[1],mat.shape[0]))
     #if mat.shape[0] > 2:
@@ -218,6 +304,14 @@ newList = testSub.getMinorList()
 
 @time_dec
 def getDeterminate(subMat):
+    '''Calculates the determinate of a matrix
+
+    Args:
+    SubMatrix class object
+    
+    Returns
+    determinate of a matrix'''
+
     #print("determinate twos for two")
     #print(subMat.mat)
     matList = subMat.getMinorList()
@@ -228,8 +322,16 @@ def getDeterminate(subMat):
     
 
 @time_dec
-def getListOfTwos(matList):
+def getListOfTwos(matList): 
+    '''get a list of 2x2 matrices for calculatiing the original matrix determinant
+
+    Args:
+    list of subMatrix class objects
+
+    Returns:
+    a list of 2x2 subMatrices for the purpose of calculating the determinant
     
+    ''' 
     if matList[0].mat.shape[0] >2:
         while(matList[0].mat.shape[0]>2):
             newList = []
@@ -262,6 +364,15 @@ i = 0
 
 @time_dec
 def calcDeterminantFromTwos(matList):
+
+    """calculates the determinate from a list of 2x2 sub matrices
+
+    Args:
+    List of 2x2 subMatrices
+
+    Return:
+    total float which is the calculated determinant """
+
     total= 0
     for mat in matList:
        
@@ -272,11 +383,20 @@ def calcDeterminantFromTwos(matList):
 determin =  calcDeterminantFromTwos(twoList)
 
 def getInverse(subMat):
-     cof = getCofactor(subMat)
-     deter = getDeterminate(subMat)
-     Tcof = getTranspose(cof)
-     inverse = Tcof/deter
-     return inverse
+    ''' calculates the inverse of a matrix
+    
+    Args:
+    subMatrix object
+    
+    Returns:
+    inverse matrix of hte input matrix
+    '''
+    cof = getCofactor(subMat)
+    deter = getDeterminate(subMat)
+    Tcof = getTranspose(cof)
+    inverse = Tcof/deter
+
+    return inverse
 
 
 #print(determin)

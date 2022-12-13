@@ -74,3 +74,32 @@ def testSub54():
     lin  = matrixSub(mat2,mat1 )
     npsub = np.subtract(mat2, mat1)
     assert(lin.all() == npsub.all())
+
+
+def testDeterminant():
+    mat1 = makeMatrix(5, 5)
+
+    det1 = getDeterminate(mat1)
+    npdet = np.linalg.det(mat1)
+    print(np.linalg.det(mat1))
+
+    assert(det1 == npdet)
+
+def testCofactor():
+    mat1 = makeMatrix(5, 5)
+    cofMat = getCofactor(mat1)
+    npCofactor = np.linalg.inv(mat1).T * np.linalg.det(mat1)
+    assert(cofMat.all() == npCofactor.all())
+
+def testTranspose():
+    mat1 = makeMatrix(5, 5)
+    trans1 = getTranspose(mat1)
+    nptran = mat1.transpose()
+    assert(trans1.all() == nptran.all())
+
+
+def testInverse():
+    mat1 = makeMatrix(5, 5)
+    inv1 = getInverse(mat1)
+    npinv =  np.linalg.inv(mat1)
+    assert(inv1.all() == npinv.all())
