@@ -44,8 +44,8 @@ def MatrixMult(mat1, mat2):
     prodMat: result of matrix multiplication
 
     '''
-        prodMat = np.zeros((mat2.shape[0], mat1.shape[1]))
-        if mat1.shape[0] == mat2.shape[1] or mat1.shape[1] == mat2.shape[0]:
+    prodMat = np.empty((mat2.shape[0], mat1.shape[1]))
+    if mat1.shape[0] == mat2.shape[1] or mat1.shape[1] == mat2.shape[0]:
 
             for x in range(mat1.shape[1]):
                 
@@ -59,8 +59,8 @@ def MatrixMult(mat1, mat2):
             #print(prodMat)
             return prodMat
 
-        else:
-            print("matrices do not match")
+    else:
+        print("matrices do not match")
 
 import numpy as np
 
@@ -81,13 +81,12 @@ def makeMatrix(dim1, dim2):
 
     Returns:
     matrix of random ints
-    
     '''
-    
-    matrix = np.zeros((dim1, dim2))
+    matrix = np.empty((dim1, dim2))
     for i in range(dim1):
         for j in range(dim2):
-            matrix[i][j] = ran.randint(-10,10)
+            matrix[i][j] = ran.randint(0, 9)
+    
     return matrix
 
 
@@ -103,7 +102,6 @@ mat2 = makeMatrix(2, 2)
 
 def matrixAdd(mat1, mat2):
     '''perform matrix additon
-    
     Args:
     mat1: matrix to be added
     mat2: matrix to be added
@@ -135,7 +133,7 @@ def matrixSub(mat1, mat2):
 
     '''
     subMat = np.zeros((mat1.shape[0],mat2.shape[1]))
-    if mat1.shape[1] == mat2.shape[1] and  mat1.shape[0] == mat2.shape[0]:
+    if mat1.shape[1] == mat2.shape[1]  and  mat1.shape[0] == mat2.shape[0]:
         for i in range(mat1.shape[0]):
             for j in range(mat1.shape[1]):
                 diff = mat1[i][j] -  mat2[i][j]
@@ -275,13 +273,14 @@ def getCofactor(mat):
 
     '''
     mat = np.array(mat)
+    print(mat.shape)
     cofMat = np.zeros((mat.shape[1],mat.shape[0]))
     #if mat.shape[0] > 2:
    
     for row  in range(mat.shape[0]):
                 
             for col in range(mat.shape[0]):
-                        submat = getCofactorSubmatrix(mat, row, col)
+                        submat = getMinor(row, col, mat)
                         
                         subMat = subMatrix(1, np.array(submat))
                         
@@ -387,11 +386,11 @@ def getInverse(subMat):
     
     Args:
     subMatrix object
-    
+
     Returns:
     inverse matrix of hte input matrix
     '''
-    cof = getCofactor(subMat)
+    cof = getCofactor(subMat.mat)
     deter = getDeterminate(subMat)
     Tcof = getTranspose(cof)
     inverse = Tcof/deter

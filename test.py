@@ -10,31 +10,52 @@ mat3= makeMatrix(6, 6)
 def testMult4():
     mat1 = makeMatrix(4, 4)
     mat2 = makeMatrix(4, 4)
+    
     lin  = MatrixMult(mat1, mat2)
     npmult = np.matmul(mat1, mat2)
+    if not lin.all() == npmult.all():
+        print("calc")
+        print(lin)
+        print("np")
+        print(npmult)
     assert(lin.all() == npmult.all())
 
 
 def testMult10():
-    mat1 = makeMatrix(10, 10)
-    mat2 = makeMatrix(10, 10)
+    mat1 = makeMatrix(5, 5)
+    mat2 = makeMatrix(5, 5)
     lin  = MatrixMult(mat1, mat2)
     npmult = np.matmul(mat1, mat2)
+    if not lin.all() == npmult.all():
+        print("calc")
+        print(lin)
+        print("np")
+        print(npmult)
     assert(lin.all() == npmult.all())
 
 def testMult105():
-    mat1 = makeMatrix(2, 1)
-    mat2 = makeMatrix(1, 2)
+    mat1 = makeMatrix(4, 3)
+    mat2 = makeMatrix(3, 4)
     lin  = MatrixMult(mat1, mat2)
     npmult = np.matmul(mat1, mat2)
-    print(npmult)
+    
+    if not lin.all() == npmult.all():
+        print("calc")
+        print(lin)
+        print("np")
+        print(npmult)
     assert(lin.all() == npmult.all())
 
 def testMult34():
     mat1 = makeMatrix(3, 5)
-    mat2 = makeMatrix(2, 3)
+    mat2 = makeMatrix(5, 3)
     lin  = MatrixMult(mat2,mat1 )
     npmult = np.matmul(mat2, mat1)
+    if not lin.all() == npmult.all():
+        print("calc")
+        print(lin)
+        print("np")
+        print(npmult)
     assert(lin.all() == npmult.all())
 
 def testMult79():
@@ -42,6 +63,12 @@ def testMult79():
     mat2 = makeMatrix(6, 7)
     lin  = MatrixMult(mat2,mat1 )
     npmult = np.matmul(mat2, mat1)
+    if not lin.all() == npmult.all():
+        print("calc")
+        print(lin)
+        print("np")
+        print(npmult)
+    assert(lin.all() == npmult.all())
     
 
 def testAdd73():
@@ -49,6 +76,7 @@ def testAdd73():
     mat2 = makeMatrix(7, 3)
     lin  = matrixAdd(mat1,mat2 )
     npadd = np.add(mat1, mat2)
+
     assert(lin.all() == npadd.all())
 
 def testAdd54():
@@ -78,15 +106,17 @@ def testSub54():
 
 def testDeterminant():
     mat1 = makeMatrix(5, 5)
-
-    det1 = getDeterminate(mat1)
+    subm = subMatrix(1.0, mat1)
+    det1 = getDeterminate(subm)
     npdet = np.linalg.det(mat1)
     print(np.linalg.det(mat1))
 
-    assert(det1 == npdet)
+    assert(round(det1) == round(npdet))
 
 def testCofactor():
     mat1 = makeMatrix(5, 5)
+    subm = subMatrix(1.0, mat1)
+    print(mat1.shape)
     cofMat = getCofactor(mat1)
     npCofactor = np.linalg.inv(mat1).T * np.linalg.det(mat1)
     assert(cofMat.all() == npCofactor.all())
@@ -100,6 +130,7 @@ def testTranspose():
 
 def testInverse():
     mat1 = makeMatrix(5, 5)
-    inv1 = getInverse(mat1)
+    subm = subMatrix(1.0, mat1)
+    inv1 = getInverse(subm)
     npinv =  np.linalg.inv(mat1)
     assert(inv1.all() == npinv.all())
