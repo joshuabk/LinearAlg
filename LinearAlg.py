@@ -44,16 +44,16 @@ def MatrixMult(mat1, mat2):
     prodMat: result of matrix multiplication
 
     '''
-    prodMat = np.empty((mat2.shape[0], mat1.shape[1]))
-    if mat1.shape[0] == mat2.shape[1] or mat1.shape[1] == mat2.shape[0]:
+    prodMat = np.empty((mat2.shape[1], mat1.shape[0]))
+    if mat1.shape[1] == mat2.shape[0]: # or mat1.shape[1] == mat2.shape[0]:
 
-            for x in range(mat1.shape[1]):
+            for x in range(mat1.shape[0]):
                 
-                for i in range(mat2.shape[0]):
+                for i in range(mat2.shape[1]):
                     sum = 0
-                    for j in range(mat1.shape[0]):
+                    for j in range(mat1.shape[1]):
                         
-                        sum +=  mat1[j][x] * mat2[i][j]
+                        sum +=  mat1[x][j] * mat2[j][i]
                     #print(sum)
                     prodMat[i][x] = int(sum)
             #print(prodMat)
@@ -85,7 +85,7 @@ def makeMatrix(dim1, dim2):
     matrix = np.empty((dim1, dim2))
     for i in range(dim1):
         for j in range(dim2):
-            matrix[i][j] = ran.randint(0, 9)
+            matrix[i][j] = ran.randint(-9, 9)
     
     return matrix
 
@@ -93,6 +93,13 @@ def makeMatrix(dim1, dim2):
 mat1 = makeMatrix(6, 6)
 
 mat2 = makeMatrix(2, 2)
+
+mat2 = makeMatrix(3, 8)
+
+print("mat2 shape")
+print(mat2.shape)
+print(mat2)
+print(mat2[1][3])
 
 #print( MatrixMult(mat1, mat2))
 #print( np.matmul(mat1, mat2))
