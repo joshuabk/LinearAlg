@@ -1,7 +1,14 @@
 from setuptools import setup
 
-setup(name='distributions',
+setup(name='KessMatrix',
       version='0.1',
-      description='Gaussian distributions',
-      packages=['distributions'],
+
+      description='Linear Algebra package',
+      
+      author = 'Joshua Kessler'
+
+      author_email = 'jbarlowk@gmail.com'
+
+      packages=['KessMatrix'],
+
       zip_safe=False)

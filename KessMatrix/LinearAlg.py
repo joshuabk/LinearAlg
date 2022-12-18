@@ -151,23 +151,7 @@ def matrixSub(mat1, mat2):
 
 
 #sumM = matrixAdd(mat1, mat2)
-@time_dec
-def getTranspose(mat):
-    '''calculates transpose of a matrix
 
-    Args: 
-    mat: Matrix to be transposed
-
-    Return:
-    adjMat: Transposed Matrix
-    
-    '''
-    mat = np.array(mat)
-    adjMat = np.zeros((mat.shape[1], mat.shape[0]))
-    for i in range(mat.shape[0]):
-            for j in range(mat.shape[1]):
-                adjMat[j][i] = mat[i][j]
-    return adjMat
 
 
           
@@ -176,7 +160,7 @@ def getTranspose(mat):
 #print(np.add(mat1, mat2))
 
 
-invM =  getTranspose(mat1)
+#invM =  getTranspose(mat1)
 # returns matrix with row removed
 def chopRow(row, mat):
     '''removes a row from a matrix
@@ -233,6 +217,14 @@ def getMinor(row, col, mat):
 
 
 class subMatrix:
+    ''' subMatrix class for calculating inverse of a matrix
+
+    Attributes:
+        mat: matrix
+        coef: coef to mutiply matrix 
+    
+    
+    '''
     def __init__(self, coef, mat):
         self.coef = coef
         self.mat = mat
@@ -240,7 +232,7 @@ class subMatrix:
     def getMinorList(self):
         '''gives initial list of minors for every element of the matrix
         Args: 
-        self
+        self: self subMatrix object
 
         Returns: 
         List of minor matrices, one for each element of the array
@@ -269,54 +261,111 @@ class subMatrix:
             #print(self.mat)
             subList.append(self)
             return subList
-@time_dec
-def getCofactor(mat):
-    '''returns the cofactor for a matrix
-    Args:
-    Matrix to find cofactor for
 
-    Returns:
-   cofMat: Cofactor Matrix
+    @time_dec
+    def getTranspose(self):
+        '''calculates transpose of a matrix
 
-    '''
-    mat = np.array(mat)
-    print(mat.shape)
-    cofMat = np.zeros((mat.shape[1],mat.shape[0]))
-    #if mat.shape[0] > 2:
-   
-    for row  in range(mat.shape[0]):
+        Args: 
+        self: self subMatrix object
+
+        Return:
+        adjMat: Transposed Matrix
+        
+        '''
+        mat = self.mat
+        tranMat = np.zeros((mat.shape[1], mat.shape[0]))
+        for i in range(mat.shape[0]):
+                for j in range(mat.shape[1]):
+                    tranMat[j][i] = mat[i][j]
+        return tranMat
+
+    @time_dec
+    def getDeterminate(self):
+        '''Calculates the determinate of a matrix
+
+        Args:
+        self: self subMatrix class object
+        
+        Returns
+        determinate of a matrix'''
+
+        #print("determinate twos for two")
+        #print(subMat.mat)
+        matList = self.getMinorList()
+    
+        twoList = getListOfTwos(matList)
+        deter = calcDeterminantFromTwos(twoList)
+
+        return deter
+
+    @time_dec
+    def getCofactor(self):
+        '''returns the cofactor for a matrix
+        Args:
+        self: self subMatrix object
+
+        Returns:
+        cofMat: Cofactor Matrix
+
+        '''
+        mat = self.mat
+        print(mat.shape)
+        cofMat = np.zeros((mat.shape[1],mat.shape[0]))
+        #if mat.shape[0] > 2:
+        for row  in range(mat.shape[0]):
+                for col in range(mat.shape[0]):
+                            submat = getMinor(row, col, mat)
+                            
+                            subMat = subMatrix(1, np.array(submat))                           
+                            if subMat.mat.shape[0] > 1:
+                                total  = subMat.getDeterminate()
+                            else:
+                                total = subMat.mat[0]
+                            
+                            total = total * (-1)**(row+col+2)
+                            cofMat[row][col] = total
                 
-            for col in range(mat.shape[0]):
-                        submat = getMinor(row, col, mat)
-                        
-                        subMat = subMatrix(1, np.array(submat))
-                        
-                        if subMat.mat.shape[0] > 1:
+        return cofMat
 
-                            total  = getDeterminate(subMat)
-                        else:
-                            total = subMat.mat[0]
-                        
-                        total = total * (-1)**(row+col+2)
-                        
-                        cofMat[row][col] = total
-            
-    return cofMat
+    def getInverse(self):
+        ''' calculates the inverse of a matrix
+        
+        Args:
+        self: self subMatrix object
+
+        Returns:
+        inverse matrix of hte input matrix
+        '''
+        if self.mat.shape[0] == self.mat.shape[1]:
+            cof = self.getCofactor()
+            deter = self.getDeterminate()
+            cofSumMat = subMatrix(1.0, cof)
+            Tcof = cofSumMat.getTranspose()
+            inverse = Tcof/deter
+
+            return inverse
+        else: 
+            print("this is not a square matrix")
+
+
+
+
      
  
 
 testSub = subMatrix(1, mat1)
 newList = testSub.getMinorList()
 
-@time_dec
+'''@time_dec
 def getDeterminate(subMat):
-    '''Calculates the determinate of a matrix
+    Calculates the determinate of a matrix
 
     Args:
     SubMatrix class object
     
     Returns
-    determinate of a matrix'''
+    determinate of a matrix
 
     #print("determinate twos for two")
     #print(subMat.mat)
@@ -324,8 +373,7 @@ def getDeterminate(subMat):
   
     twoList = getListOfTwos(matList)
     deter = calcDeterminantFromTwos(twoList)
-    return deter
-    
+    return deter'''
 
 @time_dec
 def getListOfTwos(matList): 
@@ -388,43 +436,29 @@ def calcDeterminantFromTwos(matList):
 
 determin =  calcDeterminantFromTwos(twoList)
 
-def getInverse(subMat):
-    ''' calculates the inverse of a matrix
-    
-    Args:
-    subMatrix object
 
-    Returns:
-    inverse matrix of hte input matrix
-    '''
-    cof = getCofactor(subMat.mat)
-    deter = getDeterminate(subMat)
-    Tcof = getTranspose(cof)
-    inverse = Tcof/deter
-
-    return inverse
 
 
 #print(determin)
 
-
-cofMat = getCofactor(mat1)
+subMat1 = subMatrix(1.0, mat1)
+cofMat = subMat1.getCofactor()
 matAdj = np.matrix(mat1)
 
 
 #print(matAdj.getH())
 
-
-adjMat = getTranspose(cofMat)
+subMat2 = subMatrix(1.0, cofMat)
+adjMat = subMat2.getTranspose()
 npCofactor = np.linalg.inv(mat1).T * np.linalg.det(mat1)
 #print(mat1)
 '''print(npCofactor)
 
 print(cofMat)
 #print(adjMat)'''
-
-print(adjMat/determin)
-
+inverse = subMat1.getInverse()
+#print(adjMat/determin)
+print(inverse)
 print(np.linalg.inv(mat1))
 
 #adjM = getAdjoint(cofMat)

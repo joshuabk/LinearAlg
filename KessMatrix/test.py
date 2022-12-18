@@ -107,7 +107,7 @@ def testSub54():
 def testDeterminant5():
     mat1 = makeMatrix(5, 5)
     subm = subMatrix(1.0, mat1)
-    det1 = getDeterminate(subm)
+    det1 = subm.getDeterminate()
     npdet = np.linalg.det(mat1)
     print(np.linalg.det(mat1))
 
@@ -117,7 +117,7 @@ def testDeterminant5():
 def testDeterminant8():
     mat1 = makeMatrix(8, 8)
     subm = subMatrix(1.0, mat1)
-    det1 = getDeterminate(subm)
+    det1 = subm.getDeterminate()
     npdet = np.linalg.det(mat1)
     print(np.linalg.det(mat1))
 
@@ -127,7 +127,7 @@ def testCofactor7():
     mat1 = makeMatrix(7, 7)
     subm = subMatrix(1.0, mat1)
     print(mat1.shape)
-    cofMat = getCofactor(mat1)
+    cofMat = subm.getCofactor()
     npCofactor = np.linalg.inv(mat1).T * np.linalg.det(mat1)
     assert(cofMat.all() == npCofactor.all())
 
@@ -135,13 +135,22 @@ def testCofactor3():
     mat1 = makeMatrix(3, 3)
     subm = subMatrix(1.0, mat1)
     print(mat1.shape)
-    cofMat = getCofactor(mat1)
+    cofMat =  subm.getCofactor()
     npCofactor = np.linalg.inv(mat1).T * np.linalg.det(mat1)
     assert(cofMat.all() == npCofactor.all())
 
-def testTranspose():
+def testTranspose7():
     mat1 = makeMatrix(7, 7)
-    trans1 = getTranspose(mat1)
+    subm = subMatrix(1.0, mat1)
+    trans1 = subm.getTranspose()
+    nptran = mat1.transpose()
+    assert(trans1.all() == nptran.all())
+
+
+def testTranspose3():
+    mat1 = makeMatrix(3, 3)
+    subm = subMatrix(1.0, mat1)
+    trans1 = subm.getTranspose()
     nptran = mat1.transpose()
     assert(trans1.all() == nptran.all())
 
@@ -149,7 +158,7 @@ def testTranspose():
 def testInverse3():
     mat1 = makeMatrix(3, 3)
     subm = subMatrix(1.0, mat1)
-    inv1 = getInverse(subm)
+    inv1 = subm.getInverse()
     npinv =  np.linalg.inv(mat1)
     assert(inv1.all() == npinv.all())
 
@@ -158,7 +167,30 @@ def testInverse3():
 def testInverse7():
     mat1 = makeMatrix(7, 7)
     subm = subMatrix(1.0, mat1)
-    inv1 = getInverse(subm)
+    inv1 = subm.getInverse()
+    npinv =  np.linalg.inv(mat1)
+    assert(inv1.all() == npinv.all())
+
+
+def testInverse5():
+    mat1 = makeMatrix(5, 5)
+    subm = subMatrix(1.0, mat1)
+    inv1 = subm.getInverse()
+    npinv =  np.linalg.inv(mat1)
+    assert(inv1.all() == npinv.all())
+
+
+def testInverse8():
+    mat1 = makeMatrix(8, 8)
+    subm = subMatrix(1.0, mat1)
+    inv1 = subm.getInverse()
+    npinv =  np.linalg.inv(mat1)
+    assert(inv1.all() == npinv.all())
+
+def testInverse2():
+    mat1 = makeMatrix(2, 2)
+    subm = subMatrix(1.0, mat1)
+    inv1 = subm.getInverse()
     npinv =  np.linalg.inv(mat1)
     assert(inv1.all() == npinv.all())
 
